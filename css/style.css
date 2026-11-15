@@ -410,3 +410,105 @@ a:hover {
 .descricao-jogo:empty {
     display: none;
 }
+
+/* =====================================
+   PÁGINA MEUS ALUGUÉIS
+===================================== */
+
+.pagina-biblioteca .cabecalho-catalogo {
+    text-align: left;
+}
+
+.pagina-biblioteca .logo-gamerent {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.pagina-biblioteca .conteudo-catalogo {
+    min-height: 70vh;
+}
+
+.pagina-biblioteca .filtros-catalogo {
+    margin-bottom: 30px;
+}
+
+.pagina-biblioteca .filtros-catalogo input,
+.pagina-biblioteca .filtros-catalogo select {
+    background: #171321;
+    color: white;
+    border: 1px solid #514465;
+    border-radius: 8px;
+    padding: 13px;
+}
+
+.pagina-biblioteca .filtros-catalogo input:focus,
+.pagina-biblioteca .filtros-catalogo select:focus {
+    outline: none;
+    border-color: #9b5cff;
+    box-shadow: 0 0 8px rgba(155, 92, 255, 0.4);
+}
+
+.pagina-biblioteca .filtros-catalogo select option {
+    background: #171321;
+    color: white;
+}
+
+.pagina-biblioteca .card-jogo {
+    text-align: left;
+}
+
+.pagina-biblioteca .card-jogo img {
+    height: 190px;
+}
+
+.pagina-biblioteca .informacoes-jogo h3 {
+    color: #b68aff;
+}
+
+.pagina-biblioteca .informacoes-jogo p {
+    color: #b8b3c7;
+}
+
+.pagina-biblioteca .botao-renovar {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: linear-gradient(90deg, #7b2cff, #9b5cff);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.pagina-biblioteca .botao-renovar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(123, 44, 255, 0.4);
+}
+
+.pagina-biblioteca .mensagem-catalogo {
+    text-align: center;
+}
+
+.pagina-biblioteca .mensagem-sucesso {
+    color: #70e6a2;
+    background: #153d2a;
+    border: 1px solid #246b47;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+@media (max-width: 650px) {
+    .pagina-biblioteca .conteudo-catalogo {
+        width: 92%;
+    }
+}
+/* Ajuste dos campos de pesquisa e filtro */
+.pagina-biblioteca .filtros-catalogo input,
+.pagina-biblioteca .filtros-catalogo select {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+}
