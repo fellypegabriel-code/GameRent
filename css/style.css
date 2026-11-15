@@ -1,57 +1,412 @@
+
+/* CONFIGURAÇÕES GERAIS */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+
 body {
-    background: #090711;
-    color: white;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #21123b, #090711 65%);
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
-form {
-    background-color: #1e1e1e;
-    width: 370px;
-    margin: 100px auto;
-    padding: 30px;
-    border-radius: 12px;
 
-    border: 1px solid #383044;
-    box-shadow: 0 0 20px rgba(123, 44, 255, 0.15);
-}
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    background-color: #2b2b2b;
-    color: white;
-    border: 1px solid #555;
-    border-radius: 6px;
-}
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #7b2cff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #5e19c9;
-    transition: background-color 0.3s;
-}
+/* CABEÇALHO */
 header {
     text-align: center;
-    margin-top: 60px;
+    padding: 50px 20px 10px;
 }
 
 header h1 {
-    color: #9b5cff;
-    font-size: 50px;
+    color: #a66bff;
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 0 18px rgba(123, 44, 255, 0.4);
 }
+
+/* CONTEÚDO */
 section {
     text-align: center;
+    padding: 20px;
+}
+
+section h2 {
+    font-size: 26px;
+    margin-bottom: 12px;
 }
 
 section p {
-    color: #aaaaaa;
+    color: #b8b3c7;
     margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* FORMULÁRIOS */
+form {
+    background: linear-gradient(145deg, #211d2d, #171321);
+    width: 370px;
+    max-width: calc(100% - 32px);
+    margin: 30px auto;
+    padding: 35px;
+    border-radius: 16px;
+    border: 1px solid #49356b;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* CAMPOS */
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    color: #ddd5ed;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 18px;
+    background: #100d19;
+    color: white;
+    border: 1px solid #514465;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #9b5cff;
+    box-shadow: 0 0 8px rgba(155, 92, 255, 0.4);
+}
+
+input::placeholder {
+    color: #898294;
+}
+
+/* BOTÕES */
+button {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(90deg, #7b2cff, #9b5cff);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(123, 44, 255, 0.4);
+}
+
+/* LINKS */
+a {
+    color: #ad7aff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 38px;
+    }
+
+    form {
+        padding: 25px;
+    }
+}
+
+/* TELA DE RECUPERAÇÃO */
+.pagina-recuperacao {
+    text-align: center;
+    padding: 45px 15px;
+}
+
+.logo-gamerent {
+    color: #a66bff;
+    font-size: 58px;
+    margin-bottom: 35px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(123, 44, 255, 0.4);
+}
+
+.titulo-recuperacao {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.descricao-recuperacao {
+    color: #b8b3c7;
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.botao-voltar {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 12px 25px;
+    border: 1px solid #7b2cff;
+    border-radius: 8px;
+    color: #ad7aff;
+    transition: 0.3s;
+}
+
+.botao-voltar:hover {
+    background: #7b2cff;
+    color: white;
+    text-decoration: none;
+}
+
+/* CABEÇALHO DO CATÁLOGO */
+.cabecalho-catalogo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    margin: 0;
+    border-bottom: 1px solid #38264f;
+}
+
+.cabecalho-catalogo .logo-gamerent {
+    margin: 0;
+    font-size: 42px;
+}
+
+.cabecalho-catalogo nav {
+    display: flex;
+    gap: 25px;
+}
+
+/* CONTEÚDO */
+.conteudo-catalogo {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.introducao-catalogo {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.introducao-catalogo h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.introducao-catalogo p {
+    color: #b8b3c7;
+}
+
+/* PESQUISA E FILTROS */
+.filtros-catalogo {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.filtros-catalogo input,
+.filtros-catalogo select {
+    flex: 1;
+    min-width: 0;
+    padding: 13px;
+    background: #171321;
+    color: white;
+    border: 1px solid #514465;
+    border-radius: 8px;
+}
+
+.mensagem-catalogo {
+    color: #b8b3c7;
+    margin-bottom: 20px;
+}
+
+/* CARDS */
+.grade-jogos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+.card-jogo {
+    background: #1e1929;
+    border: 1px solid #49356b;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.card-jogo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(123, 44, 255, 0.2);
+}
+
+.card-jogo img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+
+.informacoes-jogo {
+    padding: 18px;
+}
+
+.informacoes-jogo h3 {
+    font-size: 19px;
+    margin-bottom: 15px;
+}
+
+.informacoes-jogo p {
+    color: #b8b3c7;
+    margin-bottom: 10px;
+}
+
+.informacoes-jogo .preco-jogo {
+    color: #ad7aff;
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.status-disponivel,
+.status-alugado {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.status-disponivel {
+    background: #153d2a;
+    color: #70e6a2;
+}
+
+.status-alugado {
+    background: #492126;
+    color: #ff9a9a;
+}
+
+.botao-alugar:disabled {
+    background: #55505e;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* CELULAR */
+@media (max-width: 650px) {
+    .cabecalho-catalogo {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cabecalho-catalogo nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filtros-catalogo {
+        flex-direction: column;
+    }
+}
+.botao-detalhes {
+    margin-top: 12px;
+}
+
+/* Página de detalhes do jogo */
+
+.detalhes-container {
+    max-width: 1150px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.detalhes-jogo {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    background: #151020;
+    padding: 35px;
+    border: 1px solid #383044;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(123, 44, 255, 0.12);
+}
+
+.imagem-detalhes img {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.informacoes-detalhes {
+    background: #211733;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #44305e;
+}
+
+.informacoes-detalhes h2 {
+    color: #b68aff;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.informacoes-detalhes p {
+    margin: 18px 0;
+    line-height: 1.7;
+}
+
+.descricao-jogo {
+    background: #171020;
+    padding: 18px;
+    border-radius: 8px;
+    color: #d0c5df;
+}
+
+.preco-detalhes {
+    margin-top: 25px;
+    padding: 18px;
+    background: #171020;
+    border-radius: 8px;
+}
+
+#botaoAlugar {
+    width: auto;
+    min-width: 190px;
+    padding: 14px 28px;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .detalhes-jogo {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .imagem-detalhes img {
+        height: 300px;
+    }
+
+    .informacoes-detalhes {
+        padding: 20px;
+    }
+}
+.descricao-jogo:empty {
+    display: none;
 }

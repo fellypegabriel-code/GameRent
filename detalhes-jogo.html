@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Jogo | GameRent</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="cabecalho-catalogo">
+        <h1 class="logo-gamerent">GameRent</h1>
+
+        <nav>
+            <a href="catalogo.html">Catálogo</a>
+            <a href="meus-alugueis.html">Meus aluguéis</a>
+            <a href="index.html">Sair</a>
+        </nav>
+    </header>
+
+    <main class="detalhes-container">
+
+        <a href="catalogo.html" class="botao-voltar">
+            ← Voltar ao catálogo
+        </a>
+
+        <section class="detalhes-jogo">
+
+            <div class="imagem-detalhes">
+                <img
+                    id="imagemJogo"
+                    src="https://placehold.co/600x400/21123b/ffffff?text=GameRent"
+                    alt="Capa do jogo"
+                >
+            </div>
+
+            <div class="informacoes-detalhes">
+
+                <h2 id="nomeJogo">Nome do jogo</h2>
+
+                <span id="statusJogo" class="status-disponivel">
+                    Disponível
+                </span>
+
+                <p>
+    <strong>Gênero:</strong>
+    <span id="generoJogo">Não informado</span>
+</p>
+
+<p>
+    <strong>Plataforma:</strong>
+    <span id="plataformaJogo">Não informada</span>
+</p>
+
+<p>
+    <strong>Data de lançamento:</strong>
+    <span id="dataLancamento">Não informada</span>
+</p>
+
+<p>
+    <strong>Avaliação:</strong>
+    <span id="avaliacaoJogo">Não disponível</span>
+</p>
+
+<p>
+    <strong>Desenvolvedora:</strong>
+    <span id="desenvolvedoraJogo">Não informada</span>
+</p>
+
+<p id="descricaoJogo" class="descricao-jogo"></p>
+
+               <p id="descricaoJogo" class="descricao-jogo"></p>
+                <div class="preco-detalhes">
+                    <span>Valor do aluguel</span>
+                    <h3 id="precoJogo">R$ 0,00 / dia</h3>
+                </div>
+
+                <button id="botaoAlugar" type="button">
+                    Alugar jogo
+                </button>
+
+                <p id="mensagemAluguel"></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="js/detalhes-jogo.js"></script>
+
+</body>
+</html>
