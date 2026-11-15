@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo | GameRent</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="cabecalho-catalogo">
+        <h1 class="logo-gamerent">GameRent</h1>
+        <nav>
+            <a href="catalogo.html">Catálogo</a>
+            <a href="meus-alugueis.html">Meus aluguéis</a>
+            <a href="index.html">Sair</a>
+        </nav>
+    </header>
+
+    <main class="conteudo-catalogo">
+
+        <section class="introducao-catalogo">
+            <h2>Explore nosso catálogo</h2>
+            <p>Encontre seu próximo jogo favorito!</p>
+        </section>
+
+        <section class="filtros-catalogo">
+            <input
+                type="search"
+                id="pesquisa"
+                placeholder="Pesquisar jogo pelo nome..."
+            >
+
+            <select id="filtroGenero">
+                <option value="">Todos os gêneros</option>
+                <option value="Ação">Ação</option>
+                <option value="Aventura">Aventura</option>
+                <option value="Esporte">Esporte</option>
+                <option value="Corrida">Corrida</option>
+            </select>
+
+            <select id="filtroPlataforma">
+                <option value="">Todas as plataformas</option>
+                <option value="PC">PC</option>
+                <option value="PlayStation">PlayStation</option>
+                <option value="Xbox">Xbox</option>
+            </select>
+        </section>
+
+        <p id="mensagemCatalogo" class="mensagem-catalogo"></p>
+
+        <section id="listaJogos" class="grade-jogos">
+            <!-- Os cards serão criados pelo JavaScript -->
+        </section>
+
+    </main>
+
+    <script src="js/catalogo.js"></script>
+</body>
+</html>
