@@ -1,4 +1,3 @@
-
 let jogos = [];
 
 const API_KEY = "2ef7d5946ba74cf5b824a58f80b9aa6f";
@@ -60,8 +59,7 @@ function mostrarJogos(lista) {
         mensagemCatalogo.textContent = "Nenhum jogo encontrado.";
         return;
     }
-
-    mensagemCatalogo.textContent = `${lista.length} jogo(s) encontrado(s).`;
+mensagemCatalogo.textContent = `${lista.length} jogo(s) encontrado(s).`;
 
     lista.forEach(jogo => {
         const alugado = jogoEstaAlugado(jogo.id);
@@ -134,14 +132,37 @@ function alugarJogo(id) {
         return;
     }
 
+    const jogo = jogos.find(item => item.id === id);
+
+    if (!jogo) {
+        alert("Jogo não encontrado!");
+        return;
+    }
+
     const dataAluguel = new Date();
     const dataExpiracao = new Date(dataAluguel);
 
     dataExpiracao.setDate(dataExpiracao.getDate() + 7);
 
+    // Formata a data no horário local
+    function formatarDataLocal(data) {
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, "0");
+        const dia = String(data.getDate()).padStart(2, "0");
+
+        return `${ano}-${mes}-${dia}`;
+    }
+
+    dataExpiracao.setHours(23, 59, 59, 999);
+
     alugueis.push({
         id: Date.now(),
-        jogoId: id,
+        jogoId: jogo.id,
+        jogo: jogo.nome,
+        plataforma: jogo.plataforma,
+        capa: jogo.capa,
+        dataInicio: formatarDataLocal(dataAluguel),
+        dataVencimento: formatarDataLocal(dataExpiracao),
         dataAluguel: dataAluguel.toISOString(),
         dataExpiracao: dataExpiracao.toISOString(),
         status: "Ativo"
@@ -153,7 +174,6 @@ function alugarJogo(id) {
 
     filtrarJogos();
 }
-
 // Eventos
 pesquisa.addEventListener("input", filtrarJogos);
 filtroGenero.addEventListener("change", filtrarJogos);

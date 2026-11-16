@@ -1,4 +1,3 @@
-
 /* CONFIGURAÇÕES GERAIS */
 * {
     box-sizing: border-box;
@@ -511,4 +510,43 @@ a:hover {
     width: 100%;
     min-width: 0;
     height: 48px;
+}
+.botao-renovar,
+.botao-cancelar {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.botao-cancelar {
+    background: #8b2635;
+}
+
+.botao-cancelar:hover {
+    background: #a83245;
+}
+
+.perfil-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 35px 45px;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.perfil-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.perfil-container input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.perfil-container button {
+    margin-top: 15px;
+    width: 100%;
 }
