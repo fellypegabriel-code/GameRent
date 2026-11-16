@@ -33,7 +33,7 @@ formulario.addEventListener("submit", function(event) {
         valorSenha === usuarioObjeto.senha
     ) {
         alert("Login realizado com sucesso!");
-        window.location.href = "catalogo.html";
+       window.location.href = "catalogo.html";
     } else {
         alert("E-mail ou senha incorretos!");
     }
