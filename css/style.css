@@ -1,4 +1,5 @@
-/* CONFIGURAÇÕES GERAIS */
+
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,7 +13,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* CABEÇALHO */
+
 header {
     text-align: center;
     padding: 50px 20px 10px;
@@ -26,7 +27,7 @@ header h1 {
     text-shadow: 0 0 18px rgba(123, 44, 255, 0.4);
 }
 
-/* CONTEÚDO */
+
 section {
     text-align: center;
     padding: 20px;
@@ -43,11 +44,11 @@ section p {
     line-height: 1.5;
 }
 
-/* FORMULÁRIOS */
+
 form {
     background: linear-gradient(145deg, #211d2d, #171321);
     width: 370px;
-    max-width: calc(100% - 32px);
+    max-width: 100%;
     margin: 30px auto;
     padding: 35px;
     border-radius: 16px;
@@ -55,7 +56,6 @@ form {
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
 }
 
-/* CAMPOS */
 label {
     display: block;
     text-align: left;
@@ -85,7 +85,7 @@ input::placeholder {
     color: #898294;
 }
 
-/* BOTÕES */
+
 button {
     width: 100%;
     padding: 13px;
@@ -104,7 +104,15 @@ button:hover {
     box-shadow: 0 5px 18px rgba(123, 44, 255, 0.4);
 }
 
-/* LINKS */
+button:disabled {
+    background: #55505e;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+
 a {
     color: #ad7aff;
     text-decoration: none;
@@ -116,18 +124,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 38px;
-    }
 
-    form {
-        padding: 25px;
-    }
-}
-
-/* TELA DE RECUPERAÇÃO */
 .pagina-recuperacao {
     text-align: center;
     padding: 45px 15px;
@@ -169,7 +166,7 @@ a:hover {
     text-decoration: none;
 }
 
-/* CABEÇALHO DO CATÁLOGO */
+
 .cabecalho-catalogo {
     display: flex;
     justify-content: space-between;
@@ -189,7 +186,7 @@ a:hover {
     gap: 25px;
 }
 
-/* CONTEÚDO */
+
 .conteudo-catalogo {
     width: 90%;
     max-width: 1200px;
@@ -209,8 +206,7 @@ a:hover {
 .introducao-catalogo p {
     color: #b8b3c7;
 }
-
-/* PESQUISA E FILTROS */
+ 
 .filtros-catalogo {
     display: flex;
     gap: 15px;
@@ -228,12 +224,19 @@ a:hover {
     border-radius: 8px;
 }
 
+.filtros-catalogo input:focus,
+.filtros-catalogo select:focus {
+    outline: none;
+    border-color: #9b5cff;
+    box-shadow: 0 0 8px rgba(155, 92, 255, 0.4);
+}
+
 .mensagem-catalogo {
     color: #b8b3c7;
     margin-bottom: 20px;
 }
 
-/* CARDS */
+
 .grade-jogos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -299,34 +302,10 @@ a:hover {
     color: #ff9a9a;
 }
 
-.botao-alugar:disabled {
-    background: #55505e;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* CELULAR */
-@media (max-width: 650px) {
-    .cabecalho-catalogo {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .cabecalho-catalogo nav {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .filtros-catalogo {
-        flex-direction: column;
-    }
-}
 .botao-detalhes {
     margin-top: 12px;
 }
 
-/* Página de detalhes do jogo */
 
 .detalhes-container {
     max-width: 1150px;
@@ -378,6 +357,10 @@ a:hover {
     color: #d0c5df;
 }
 
+.descricao-jogo:empty {
+    display: none;
+}
+
 .preco-detalhes {
     margin-top: 25px;
     padding: 18px;
@@ -392,27 +375,6 @@ a:hover {
     margin-top: 20px;
 }
 
-@media (max-width: 768px) {
-    .detalhes-jogo {
-        grid-template-columns: 1fr;
-        padding: 20px;
-    }
-
-    .imagem-detalhes img {
-        height: 300px;
-    }
-
-    .informacoes-detalhes {
-        padding: 20px;
-    }
-}
-.descricao-jogo:empty {
-    display: none;
-}
-
-/* =====================================
-   PÁGINA MEUS ALUGUÉIS
-===================================== */
 
 .pagina-biblioteca .cabecalho-catalogo {
     text-align: left;
@@ -438,13 +400,10 @@ a:hover {
     border: 1px solid #514465;
     border-radius: 8px;
     padding: 13px;
-}
-
-.pagina-biblioteca .filtros-catalogo input:focus,
-.pagina-biblioteca .filtros-catalogo select:focus {
-    outline: none;
-    border-color: #9b5cff;
-    box-shadow: 0 0 8px rgba(155, 92, 255, 0.4);
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 48px;
 }
 
 .pagina-biblioteca .filtros-catalogo select option {
@@ -468,9 +427,27 @@ a:hover {
     color: #b8b3c7;
 }
 
-.pagina-biblioteca .botao-renovar {
+.pagina-biblioteca .mensagem-catalogo {
+    text-align: center;
+}
+
+.pagina-biblioteca .mensagem-sucesso {
+    color: #70e6a2;
+    background: #153d2a;
+    border: 1px solid #246b47;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+
+.botao-renovar,
+.botao-cancelar {
+    display: block;
     width: 100%;
-    margin-top: 15px;
+    margin-top: 10px;
+}
+
+.pagina-biblioteca .botao-renovar {
     padding: 12px;
     background: linear-gradient(90deg, #7b2cff, #9b5cff);
     color: white;
@@ -486,38 +463,6 @@ a:hover {
     box-shadow: 0 5px 18px rgba(123, 44, 255, 0.4);
 }
 
-.pagina-biblioteca .mensagem-catalogo {
-    text-align: center;
-}
-
-.pagina-biblioteca .mensagem-sucesso {
-    color: #70e6a2;
-    background: #153d2a;
-    border: 1px solid #246b47;
-    border-radius: 8px;
-    padding: 12px;
-}
-
-@media (max-width: 650px) {
-    .pagina-biblioteca .conteudo-catalogo {
-        width: 92%;
-    }
-}
-/* Ajuste dos campos de pesquisa e filtro */
-.pagina-biblioteca .filtros-catalogo input,
-.pagina-biblioteca .filtros-catalogo select {
-    flex: 1;
-    width: 100%;
-    min-width: 0;
-    height: 48px;
-}
-.botao-renovar,
-.botao-cancelar {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-}
-
 .botao-cancelar {
     background: #8b2635;
 }
@@ -526,16 +471,18 @@ a:hover {
     background: #a83245;
 }
 
+
 .perfil-container {
     width: 100%;
     max-width: 850px;
     margin: 30px auto;
-    padding: 35px 45px;
-    border-radius: 15px;
+    padding: 20px;
     box-sizing: border-box;
 }
 
 .perfil-container form {
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -549,4 +496,72 @@ a:hover {
 .perfil-container button {
     margin-top: 15px;
     width: 100%;
+}
+
+
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #b68aff;
+    outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+    .detalhes-jogo {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .imagem-detalhes img {
+        height: 300px;
+    }
+
+    .informacoes-detalhes {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    .cabecalho-catalogo {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cabecalho-catalogo nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .filtros-catalogo {
+        flex-direction: column;
+    }
+
+    .pagina-biblioteca .conteudo-catalogo {
+        width: 92%;
+    }
+}
+
+@media (max-width: 600px) {
+    .perfil-container {
+        padding: 15px;
+    }
+
+    .logo-gamerent {
+        font-size: 40px;
+    }
+
+    .detalhes-container {
+        margin: 20px auto;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 38px;
+    }
+
+    form {
+        padding: 25px;
+    }
 }
