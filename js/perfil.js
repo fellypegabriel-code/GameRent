@@ -1,13 +1,20 @@
-const formulario = document.querySelector("#perfilForm");
 
+const formulario = document.querySelector("#perfilForm");
 const nome = document.querySelector("#nome");
 const email = document.querySelector("#email");
 const senha = document.querySelector("#senha");
 const confirmarSenha = document.querySelector("#confirmarSenha");
 const mensagem = document.querySelector("#mensagem");
 
-// Carregar os dados salvos
-const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+let usuario;
+
+try {
+    usuario = JSON.parse(localStorage.getItem("usuario"));
+} catch (erro) {
+    console.error("Erro ao recuperar usuário:", erro);
+    usuario = null;
+}
 
 if (!usuario) {
     alert("Faça login para acessar seu perfil!");
@@ -17,36 +24,54 @@ if (!usuario) {
     email.value = usuario.email || "";
 }
 
-// Salvar alterações
+
 formulario.addEventListener("submit", function(event) {
     event.preventDefault();
 
     const novoNome = nome.value.trim();
-    const novoEmail = email.value.trim();
+    const novoEmail = email.value.trim().toLowerCase();
     const novaSenha = senha.value.trim();
     const confirmar = confirmarSenha.value.trim();
 
-    if (!novoNome || !novoEmail || !novoEmail.includes("@")) {
-        mensagem.textContent = "Preencha os dados corretamente!";
+    
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(novoEmail);
+
+    if (!novoNome || !emailValido) {
+        mensagem.textContent = "Preencha o nome e um e-mail válido!";
         return;
     }
 
-    if (novaSenha !== confirmar) {
-        mensagem.textContent = "As senhas não são iguais!";
-        return;
-    }
+    
+    if (novaSenha !== "" || confirmar !== "") {
 
-    usuario.nome = novoNome;
-    usuario.email = novoEmail;
+        if (!novaSenha || !confirmar) {
+            mensagem.textContent = "Preencha os dois campos de senha!";
+            return;
+        }
 
-    if (novaSenha !== "") {
+        if (novaSenha !== confirmar) {
+            mensagem.textContent = "As senhas não são iguais!";
+            return;
+        }
+
         usuario.senha = novaSenha;
     }
 
-    localStorage.setItem("usuario", JSON.stringify(usuario));
+    
+    usuario.nome = novoNome;
+    usuario.email = novoEmail;
 
-    senha.value = "";
-    confirmarSenha.value = "";
+   
+    try {
+        localStorage.setItem("usuario", JSON.stringify(usuario));
 
-    mensagem.textContent = "Perfil atualizado com sucesso!";
+        senha.value = "";
+        confirmarSenha.value = "";
+
+        mensagem.textContent = "Perfil atualizado com sucesso!";
+
+    } catch (erro) {
+        console.error("Erro ao salvar perfil:", erro);
+        mensagem.textContent = "Não foi possível salvar as alterações.";
+    }
 });

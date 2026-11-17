@@ -1,74 +1,190 @@
 
-
-// Recupera o jogo selecionado no catálogo
-const jogoSalvo = localStorage.getItem("jogoSelecionado");
 const API_KEY = "2ef7d5946ba74cf5b824a58f80b9aa6f";
 
-const dataLancamento = document.querySelector("#dataLancamento");
-const avaliacaoJogo = document.querySelector("#avaliacaoJogo");
-const desenvolvedoraJogo = document.querySelector("#desenvolvedoraJogo");
 
-// Elementos da página
+let jogo;
+
+try {
+    const jogoSalvo = localStorage.getItem("jogoSelecionado");
+
+    if (jogoSalvo === null) {
+        throw new Error("Nenhum jogo selecionado.");
+    }
+
+    jogo = JSON.parse(jogoSalvo);
+
+    if (!jogo || !jogo.id) {
+        throw new Error("Dados do jogo inválidos.");
+    }
+
+} catch (erro) {
+    console.error("Erro ao recuperar o jogo:", erro);
+
+    const container = document.querySelector(".detalhes-container");
+
+    container.textContent = "Nenhum jogo selecionado.";
+
+    const link = document.createElement("a");
+    link.href = "catalogo.html";
+    link.textContent = "Voltar ao catálogo";
+
+    container.appendChild(link);
+}
+
+
 const imagemJogo = document.querySelector("#imagemJogo");
 const nomeJogo = document.querySelector("#nomeJogo");
 const generoJogo = document.querySelector("#generoJogo");
 const plataformaJogo = document.querySelector("#plataformaJogo");
+const dataLancamento = document.querySelector("#dataLancamento");
+const avaliacaoJogo = document.querySelector("#avaliacaoJogo");
+const desenvolvedoraJogo = document.querySelector("#desenvolvedoraJogo");
 const descricaoJogo = document.querySelector("#descricaoJogo");
 const precoJogo = document.querySelector("#precoJogo");
 const statusJogo = document.querySelector("#statusJogo");
 const botaoAlugar = document.querySelector("#botaoAlugar");
 const mensagemAluguel = document.querySelector("#mensagemAluguel");
 
-// Verifica se existe um jogo selecionado
-if (jogoSalvo === null) {
-    document.querySelector(".detalhes-container").innerHTML = `
-        <h2>Nenhum jogo selecionado!</h2>
-        <a href="catalogo.html">Voltar ao catálogo</a>
-    `;
-} else {
-    const jogo = JSON.parse(jogoSalvo);
 
-    async function carregarDetalhesAPI() {
-        try {
-            const resposta = await fetch(
-                `https://api.rawg.io/api/games/${jogo.id}?key=${API_KEY}`
-            );
+function obterAlugueis() {
+    try {
+        return JSON.parse(localStorage.getItem("alugueis")) || [];
+    } catch (erro) {
+        console.error("Erro ao recuperar aluguéis:", erro);
+        return [];
+    }
+}
 
-            if (!resposta.ok) {
-                throw new Error("Erro ao buscar detalhes do jogo");
-            }
 
-            const dados = await resposta.json();
+function jogoEstaAlugado() {
+    const alugueis = obterAlugueis();
 
-            descricaoJogo.textContent =
-                dados.description_raw || "Descrição não disponível.";
+    return alugueis.some(aluguel =>
+        aluguel.jogoId === jogo.id &&
+        new Date(aluguel.dataExpiracao) > new Date()
+    );
+}
 
-            if (dataLancamento) {
-                dataLancamento.textContent =
-                    dados.released || "Não informada";
-            }
 
-            if (avaliacaoJogo) {
-                avaliacaoJogo.textContent =
-                    dados.rating ? `${dados.rating}/5` : "Não disponível";
-            }
+function atualizarStatus() {
+    const alugado = jogoEstaAlugado();
 
-            if (desenvolvedoraJogo) {
-                desenvolvedoraJogo.textContent =
-                    dados.developers?.map(dev => dev.name).join(", ")
-                    || "Não informada";
-            }
+    statusJogo.textContent = alugado
+        ? "Alugado"
+        : "Disponível";
 
-        } catch (erro) {
-            console.error("Erro:", erro);
-            descricaoJogo.textContent =
-                "Não foi possível carregar a descrição.";
+    statusJogo.className = alugado
+        ? "status-alugado"
+        : "status-disponivel";
+
+    botaoAlugar.disabled = alugado;
+
+    botaoAlugar.textContent = alugado
+        ? "Indisponível"
+        : "Alugar jogo";
+}
+
+
+function formatarDataLocal(data) {
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const dia = String(data.getDate()).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}`;
+}
+
+
+async function carregarDetalhesAPI() {
+    try {
+        const resposta = await fetch(
+            `https://api.rawg.io/api/games/${jogo.id}?key=${API_KEY}`
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao buscar detalhes do jogo.");
         }
+
+        const dados = await resposta.json();
+
+        descricaoJogo.textContent =
+            dados.description_raw || "Descrição não disponível.";
+
+        dataLancamento.textContent =
+            dados.released || "Não informada";
+
+        avaliacaoJogo.textContent =
+            dados.rating ? `${dados.rating}/5` : "Não disponível";
+
+        desenvolvedoraJogo.textContent =
+            dados.developers?.map(dev => dev.name).join(", ") ||
+            "Não informada";
+
+    } catch (erro) {
+        console.error("Erro ao carregar detalhes:", erro);
+
+        descricaoJogo.textContent =
+            "Não foi possível carregar a descrição.";
+
+        dataLancamento.textContent = "Não informada";
+        avaliacaoJogo.textContent = "Não disponível";
+        desenvolvedoraJogo.textContent = "Não informada";
+    }
+}
+
+
+function alugarJogo() {
+    if (jogoEstaAlugado()) {
+        mensagemAluguel.textContent =
+            "Este jogo já está alugado!";
+        atualizarStatus();
+        return;
     }
 
-    carregarDetalhesAPI();
+    const alugueis = obterAlugueis();
 
-    // Preenche as informações do jogo
+    const dataAluguel = new Date();
+    const dataExpiracao = new Date(dataAluguel);
+
+    dataExpiracao.setDate(dataExpiracao.getDate() + 7);
+    dataExpiracao.setHours(23, 59, 59, 999);
+
+    alugueis.push({
+        id: Date.now(),
+        jogoId: jogo.id,
+        jogo: jogo.nome,
+        plataforma: jogo.plataforma,
+        capa: jogo.capa,
+
+        dataInicio: formatarDataLocal(dataAluguel),
+        dataVencimento: formatarDataLocal(dataExpiracao),
+
+        dataAluguel: dataAluguel.toISOString(),
+        dataExpiracao: dataExpiracao.toISOString(),
+
+        status: "Ativo"
+    });
+
+    try {
+        localStorage.setItem(
+            "alugueis",
+            JSON.stringify(alugueis)
+        );
+
+        mensagemAluguel.textContent =
+            "Aluguel realizado com sucesso! Prazo de 7 dias.";
+
+        atualizarStatus();
+
+    } catch (erro) {
+        console.error("Erro ao salvar aluguel:", erro);
+
+        mensagemAluguel.textContent =
+            "Não foi possível salvar o aluguel.";
+    }
+}
+
+
+if (jogo) {
     imagemJogo.src = jogo.capa;
     imagemJogo.alt = `Capa de ${jogo.nome}`;
 
@@ -79,89 +195,9 @@ if (jogoSalvo === null) {
     precoJogo.textContent =
         `R$ ${jogo.valor.toFixed(2).replace(".", ",")} / dia`;
 
-    // Verifica disponibilidade
-    function jogoEstaAlugado() {
-        const alugueis =
-            JSON.parse(localStorage.getItem("alugueis")) || [];
-
-        return alugueis.some(aluguel =>
-            aluguel.jogoId === jogo.id &&
-            new Date(aluguel.dataExpiracao) > new Date()
-        );
-    }
-
-    function atualizarStatus() {
-        const alugado = jogoEstaAlugado();
-
-        statusJogo.textContent = alugado
-            ? "Alugado"
-            : "Disponível";
-
-        statusJogo.className = alugado
-            ? "status-alugado"
-            : "status-disponivel";
-
-        botaoAlugar.disabled = alugado;
-
-        botaoAlugar.textContent = alugado
-            ? "Indisponível"
-            : "Alugar jogo";
-    }
-
-    // Realiza o aluguel
-    botaoAlugar.addEventListener("click", function() {
-        if (jogoEstaAlugado()) {
-            mensagemAluguel.textContent =
-                "Este jogo já está alugado!";
-            return;
-        }
-
-        const alugueis =
-            JSON.parse(localStorage.getItem("alugueis")) || [];
-
-        const dataAluguel = new Date();
-        const dataExpiracao = new Date(dataAluguel);
-
-        dataExpiracao.setDate(dataExpiracao.getDate() + 7);
-
-        const formatarDataLocal = data => {
-            const ano = data.getFullYear();
-            const mes = String(data.getMonth() + 1).padStart(2, "0");
-            const dia = String(data.getDate()).padStart(2, "0");
-
-            return `${ano}-${mes}-${dia}`;
-        };
-
-        alugueis.push({
-            id: Date.now(),
-            jogoId: jogo.id,
-
-            // Informações do jogo
-            jogo: jogo.nome,
-            plataforma: jogo.plataforma,
-            capa: jogo.capa,
-
-            // Datas do aluguel
-            dataInicio: formatarDataLocal(dataAluguel),
-            dataVencimento: formatarDataLocal(dataExpiracao),
-
-            // Mantemos os campos originais
-            dataAluguel: dataAluguel.toISOString(),
-            dataExpiracao: dataExpiracao.toISOString(),
-
-            status: "Ativo"
-        });
-
-        localStorage.setItem(
-            "alugueis",
-            JSON.stringify(alugueis)
-        );
-
-        mensagemAluguel.textContent =
-            "Aluguel realizado com sucesso! Prazo de 7 dias.";
-
-        atualizarStatus();
-    });
+    carregarDetalhesAPI();
 
     atualizarStatus();
+
+    botaoAlugar.addEventListener("click", alugarJogo);
 }

@@ -6,28 +6,59 @@ const filtroStatus = document.getElementById("filtroStatus");
 const listaAlugueis = document.getElementById("listaAlugueis");
 const mensagem = document.getElementById("mensagem");
 
+
 function carregarAlugueis() {
-    return JSON.parse(localStorage.getItem(CHAVE_ALUGUEIS)) || [];
+    try {
+        const dados = JSON.parse(localStorage.getItem(CHAVE_ALUGUEIS)) || [];
+        return Array.isArray(dados) ? dados : [];
+    } catch (erro) {
+        console.error("Erro ao carregar aluguéis:", erro);
+        return [];
+    }
 }
+
 
 function salvarAlugueis(alugueis) {
-    localStorage.setItem(CHAVE_ALUGUEIS, JSON.stringify(alugueis));
+    try {
+        localStorage.setItem(CHAVE_ALUGUEIS, JSON.stringify(alugueis));
+        return true;
+    } catch (erro) {
+        console.error("Erro ao salvar aluguéis:", erro);
+        mensagem.textContent = "Não foi possível salvar os dados.";
+        return false;
+    }
 }
 
+
 function obterStatus(aluguel) {
+    if (aluguel.status === "Cancelado") {
+        return "cancelado";
+    }
+
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 
-    const vencimento = new Date(aluguel.dataVencimento + "T00:00:00");
+    const vencimento = new Date(
+        aluguel.dataVencimento + "T00:00:00"
+    );
 
     return vencimento >= hoje ? "ativo" : "vencido";
 }
 
+
 function formatarData(data) {
     if (!data) return "Não informada";
 
-    return new Date(data + "T00:00:00").toLocaleDateString("pt-BR");
+    const partes = data.split("-");
+    if (partes.length !== 3) return "Data inválida";
+
+    return new Date(
+        Number(partes[0]),
+        Number(partes[1]) - 1,
+        Number(partes[2])
+    ).toLocaleDateString("pt-BR");
 }
+
 
 function escaparHTML(valor) {
     return String(valor ?? "").replace(/[&<>"']/g, caractere => ({
@@ -38,6 +69,7 @@ function escaparHTML(valor) {
         "'": "&#39;"
     })[caractere]);
 }
+
 
 function renderizarAlugueis() {
     const alugueis = carregarAlugueis();
@@ -51,7 +83,8 @@ function renderizarAlugueis() {
         const status = obterStatus(aluguel);
 
         const correspondePesquisa =
-            nome.includes(pesquisa) || plataforma.includes(pesquisa);
+            nome.includes(pesquisa) ||
+            plataforma.includes(pesquisa);
 
         const correspondeStatus =
             statusSelecionado === "todos" ||
@@ -63,69 +96,77 @@ function renderizarAlugueis() {
     listaAlugueis.innerHTML = "";
 
     if (filtrados.length === 0) {
-        mensagem.innerHTML = `
-            <p>Nenhum aluguel encontrado.</p>
-        `;
+        mensagem.textContent = "Nenhum aluguel encontrado.";
         return;
     }
 
-    mensagem.innerHTML = "";
+    mensagem.textContent = "";
 
     filtrados.forEach(aluguel => {
         const status = obterStatus(aluguel);
         const ativo = status === "ativo";
 
+        const artigo = document.createElement("article");
+        artigo.className = "card-jogo";
+
         const imagem = aluguel.capa
-            ? escaparHTML(aluguel.capa)
+            ? `<img src="${escaparHTML(aluguel.capa)}"
+                alt="Capa de ${escaparHTML(aluguel.jogo)}">`
             : "";
 
-        listaAlugueis.innerHTML += `
-            <article class="card-jogo">
+        artigo.innerHTML = `
+            ${imagem}
+
+            <div class="informacoes-jogo">
+                <h3>${escaparHTML(aluguel.jogo)}</h3>
+
+                <p>
+                    Plataforma: ${escaparHTML(aluguel.plataforma)}
+                </p>
+
+                <p>
+                    Início: ${formatarData(aluguel.dataInicio)}
+                </p>
+
+                <p>
+                    Vencimento: ${formatarData(aluguel.dataVencimento)}
+                </p>
+
+                <span class="${
+                    status === "ativo"
+                        ? "status-disponivel"
+                        : status === "cancelado"
+                            ? "status-alugado"
+                            : "status-alugado"
+                }">
+                    ${
+                        status === "ativo"
+                            ? "Aluguel ativo"
+                            : status === "cancelado"
+                                ? "Aluguel cancelado"
+                                : "Aluguel vencido"
+                    }
+                </span>
 
                 ${
-                    imagem
-                        ? `<img src="${imagem}"
-                            alt="Capa de ${escaparHTML(aluguel.jogo)}">`
+                    ativo
+                        ? `<button class="botao-renovar"
+                            data-renovar="${escaparHTML(aluguel.id)}">
+                            Renovar por 7 dias
+                        </button>`
                         : ""
                 }
-
-                <div class="informacoes-jogo">
-
-                    <h3>${escaparHTML(aluguel.jogo)}</h3>
-
-                    <p>
-                        Plataforma: ${escaparHTML(aluguel.plataforma)}
-                    </p>
-
-                    <p>
-                        Início: ${formatarData(aluguel.dataInicio)}
-                    </p>
-
-                    <p>
-                        Vencimento: ${formatarData(aluguel.dataVencimento)}
-                    </p>
-
-                    <span class="${ativo ? "status-disponivel" : "status-alugado"}">
-                        ${ativo ? "Aluguel ativo" : "Aluguel vencido"}
-                    </span>
-
-                    ${
-                        ativo
-                            ? `<button class="botao-renovar"
-                                data-renovar="${escaparHTML(aluguel.id)}">
-                                Renovar por 7 dias
-                            </button>`
-                            : ""
-                    }
-
-                </div>
-            </article>
+            </div>
         `;
+
+        listaAlugueis.appendChild(artigo);
     });
 }
 
+
 pesquisaJogo.addEventListener("input", renderizarAlugueis);
 filtroStatus.addEventListener("change", renderizarAlugueis);
+
 
 listaAlugueis.addEventListener("click", event => {
     const botao = event.target.closest("[data-renovar]");
@@ -135,11 +176,18 @@ listaAlugueis.addEventListener("click", event => {
     const id = botao.dataset.renovar;
     const alugueis = carregarAlugueis();
 
-    const aluguel = alugueis.find(item => String(item.id) === id);
+    const aluguel = alugueis.find(
+        item => String(item.id) === id
+    );
 
-    if (!aluguel) return;
+    if (!aluguel || obterStatus(aluguel) !== "ativo") {
+        return;
+    }
 
-    const vencimento = new Date(aluguel.dataVencimento + "T00:00:00");
+    const vencimento = new Date(
+        aluguel.dataVencimento + "T00:00:00"
+    );
+
     vencimento.setDate(vencimento.getDate() + 7);
 
     const ano = vencimento.getFullYear();
@@ -148,14 +196,16 @@ listaAlugueis.addEventListener("click", event => {
 
     aluguel.dataVencimento = `${ano}-${mes}-${dia}`;
 
-    salvarAlugueis(alugueis);
-    renderizarAlugueis();
+    
+    const dataExpiracao = new Date(vencimento);
+    dataExpiracao.setHours(23, 59, 59, 999);
+    aluguel.dataExpiracao = dataExpiracao.toISOString();
 
-    mensagem.innerHTML = `
-        <p class="mensagem-sucesso">
-            Aluguel renovado com sucesso!
-        </p>
-    `;
+    if (salvarAlugueis(alugueis)) {
+        renderizarAlugueis();
+        mensagem.textContent = "Aluguel renovado com sucesso!";
+    }
 });
+
 
 renderizarAlugueis();

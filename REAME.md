@@ -3,8 +3,8 @@ GAMERENT
 Sistema de Locação Digital de Jogos
 
 Integrantes:
-[Fellype Gabriel Carlins]
-[Nahayana Kermilin Vieira]
+Fellype Gabriel Carlins
+Nahayana Kermilin Vieira
 
 Curso: Engenharia de Software
 Disciplina: Desenvolvimento Web |

@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Catálogo | GameRent</title>
+
     <link rel="stylesheet" href="css/style.css">
 
     <link
@@ -11,16 +14,22 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     />
 </head>
-<body>
 
+<body>
     <header class="cabecalho-catalogo">
-        <h1 class="logo-gamerent"><i class="bi bi-controller"> </i>GameRent</h1>
-       <nav>
-    <a href="catalogo.html">Catálogo</a>
-    <a href="meus-alugueis.html">Meus aluguéis</a>
-    <a href="perfil.html">Perfil</a>
-    <a href="index.html">Sair</a>
-</nav>
+
+        <h1 class="logo-gamerent">
+            <i class="bi bi-controller"></i>
+            GameRent
+        </h1>
+
+        <nav aria-label="Menu principal">
+            <a href="catalogo.html">Catálogo</a>
+            <a href="meus-alugueis.html">Meus aluguéis</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="index.html">Sair</a>
+        </nav>
+
     </header>
 
     <main class="conteudo-catalogo">
@@ -31,13 +40,15 @@
         </section>
 
         <section class="filtros-catalogo">
+
             <input
                 type="search"
                 id="pesquisa"
                 placeholder="Pesquisar jogo pelo nome..."
+                aria-label="Pesquisar jogo pelo nome"
             >
 
-            <select id="filtroGenero">
+            <select id="filtroGenero" aria-label="Filtrar por gênero">
                 <option value="">Todos os gêneros</option>
                 <option value="Ação">Ação</option>
                 <option value="Aventura">Aventura</option>
@@ -45,18 +56,19 @@
                 <option value="Corrida">Corrida</option>
             </select>
 
-            <select id="filtroPlataforma">
+            <select id="filtroPlataforma" aria-label="Filtrar por plataforma">
                 <option value="">Todas as plataformas</option>
                 <option value="PC">PC</option>
                 <option value="PlayStation">PlayStation</option>
                 <option value="Xbox">Xbox</option>
             </select>
+
         </section>
 
         <p id="mensagemCatalogo" class="mensagem-catalogo"></p>
 
         <section id="listaJogos" class="grade-jogos">
-            <!-- Os cards serão criados pelo JavaScript -->
+            <!-- Os cards dos jogos serão criados pelo JavaScript -->
         </section>
 
     </main>
